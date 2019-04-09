@@ -8,11 +8,16 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller{
 
     /**
-     * @parameter（‘user/index’）
+     * @path（‘user/index’）
      * @return array()
      */
     public function index(){
         $results = DB::select('SELECT * FROM wt_user');
-        return $results;
+        return $results['11'];
+    }
+
+    public function test(){
+        
+        return "wo shi yi ge zhongguoren";
     }
 }
