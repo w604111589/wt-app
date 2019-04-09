@@ -17,7 +17,8 @@ class ExampleController extends Controller
     }
 
     public function index(){
-        // var_dump($request);die;
+
+ 
         $res = [
             'code'=>200,
             'data'=>[],
