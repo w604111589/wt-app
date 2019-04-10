@@ -47,8 +47,9 @@ class Handler extends ExceptionHandler
     {
         //框架默认返回页面
         // return parent::render($request, $e);
-        $res =  array('code' => '300','data' => [], 'msg' => $e->getMessage().' @ErrorCode:'.$e->getCode() ,'time' => Date('Y-m-d h:i:s') );
+
         //自定义json返回格式
+        $res =  array('code' => '300','data' => [], 'msg' => $e->getMessage().' @ErrorCode:'.$e->getCode() ,'time' => Date('Y-m-d h:i:s') );
         return response()->json($res);
         
     }
