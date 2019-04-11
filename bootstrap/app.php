@@ -27,6 +27,8 @@ $app->withFacades();
 
 $app->withEloquent();
 
+$app->configure('auth');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -83,12 +85,12 @@ $app->middleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 
-// Add this line
-$app->register(Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class); 
+// 新增JWT的注册
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class); 
 
 /*
 |--------------------------------------------------------------------------

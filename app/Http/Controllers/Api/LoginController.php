@@ -3,53 +3,85 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Models\Res;
-// use App\Http\Models\Api\User;
-use App\User;
+use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\SessionGuard;
+// use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\JWTAuth;
 
 class LoginController extends Controller{
 
-    private $salt;
+    protected $jwt;
 
-    public function __construct()
+    public function __construct(JWTAuth $jwt)
     {
-        $this->salt = "userloginregister";
+        $this->jwt = $jwt;
     }
-    //登录
+
+    /**
+     * 登录
+     *
+     * @author AdamTyn
+     *
+     * @param \Illuminate\Http\Request;
+     * @return \Illuminate\Http\Response;
+     */
     public function login(Request $request)
     {
-        if($request->has('login_name') && $request->has('password')){
-            $user = User::where('login_name', '=', $request->input('login_name'))->where('password', '=', $this->salt.$request->input('password'))->first();
-            if($user){
-                $token = str_random(60);
-                $user->api_token = $token;
-                $user->save();
-                return $user->api_token;
-            }else{
-                return '用户名或密码不正确,登录失败';
-            }
-        }else{
-            return '登录信息不完整,请输入用户名和密码';
+        
+        // print_r(111);die;
+        // print_r($this->jwt);die;
+        if (! $token = $this->jwt->attempt($request->only('username', 'password'))) {
+            print_r(3123123);die;
+            return response()->json(['user_not_found'], 404);
         }
+
+        return response()->json(compact('token'));
+
     }
-    //注册
-    public function register(Request $request)
+
+    public function guard()
     {
-        if($request->has('login_name') && $request->has('password') && $request->has('email')){
-            $user = new User;
-            $user->username = $request->input('login_name');
-            $user->password = $this->salt.$request->input('password');
-            $user->email = $request->input('email');
-            $user->phone = $request->input('phone');
-            $user->api_token = str_random(60);
-            if($user->save()){
-                return '用户注册成功!';
-            }else{
-                return '用户注册失败!';
-            }
-        }else{
-            return '请输入完整用户信息!';
-        }
+        // return Auth::guard();
     }
+
+    // /**
+    //  * 用户登出
+    //  *
+    //  * @author AdamTyn
+    //  *
+    //  * @return \Illuminate\Http\Response;
+    //  */
+    // public function logout()
+    // {
+    //     $response = array('code' => '0');
+
+    //     Auth::invalidate(true);
+
+    //     return response()->json($response);
+    // }
+
+    // /**
+    //  * 更新用户Token
+    //  *
+    //  * @author AdamTyn
+    //  *
+    //  * @param \Illuminate\Http\Request;
+    //  * @return \Illuminate\Http\Response;
+    //  */
+    // public function refreshToken()
+    // {
+    //     $response = array('code' => '0');
+
+    //     if (!$token = Auth::refresh(true, true)) {
+    //         $response['code']     = '5000';
+    //         $response['errorMsg'] = '系统错误，无法生成令牌';
+    //     } else {
+    //         $response['data']['access_token'] = $token;
+    //         $response['data']['expires_in']   = strval(time() + 86400);
+    //     }
+
+    //     return response()->json($response);
+    // }
 }
