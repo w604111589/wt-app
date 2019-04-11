@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Res;
-use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\SessionGuard;
-// use Illuminate\Support\Facades\DB;
-use Tymon\JWTAuth\JWTAuth;
+use App\Models\User;
+use App\Models\Jwt;
 
 class LoginController extends Controller{
 
@@ -29,59 +26,50 @@ class LoginController extends Controller{
      */
     public function login(Request $request)
     {
-        
-        // print_r(111);die;
-        // print_r($this->jwt);die;
-        if (! $token = $this->jwt->attempt($request->only('username', 'password'))) {
-            print_r(3123123);die;
-            return response()->json(['user_not_found'], 404);
+        if($request->has('username') && $request->has('password')){
+            $user = User::where('username', '=', $request->input('username'))->where('password', '=', $request->input('password'))->first();
+            if($user){
+                $payload = [
+                    'iss'=>'w604111589',
+                    'iat'=>time(),
+                    'exp'=>time()+7200,
+                    'nbf'=>time(),
+                    'sub'=>$user['username'],
+                    'jti'=>md5(uniqid('JWT').time())
+                ];
+
+                $jwt=new Jwt;
+                $token=$jwt -> getToken($payload);
+                return Res::success(['token'=>$token]);
+            }else{
+                return '用户名或密码不正确,登录失败';
+            }
+        }else{
+            return '登录信息不完整,请输入用户名和密码';
         }
 
         return response()->json(compact('token'));
 
     }
-
-    public function guard()
+    
+    /**
+     * @author w604111589
+     * @path('register') 注册
+     * @param Resquest $request
+     * @return array()
+     */
+    public function register(Request $request)
     {
         // return Auth::guard();
     }
 
-    // /**
-    //  * 用户登出
-    //  *
-    //  * @author AdamTyn
-    //  *
-    //  * @return \Illuminate\Http\Response;
-    //  */
-    // public function logout()
-    // {
-    //     $response = array('code' => '0');
+    /**
+     * @author w604111589
+     * @path('logout') 登出
+     * @param Resquest $request
+     * @return array()
+     */
+    public function logout(Request $request){
 
-    //     Auth::invalidate(true);
-
-    //     return response()->json($response);
-    // }
-
-    // /**
-    //  * 更新用户Token
-    //  *
-    //  * @author AdamTyn
-    //  *
-    //  * @param \Illuminate\Http\Request;
-    //  * @return \Illuminate\Http\Response;
-    //  */
-    // public function refreshToken()
-    // {
-    //     $response = array('code' => '0');
-
-    //     if (!$token = Auth::refresh(true, true)) {
-    //         $response['code']     = '5000';
-    //         $response['errorMsg'] = '系统错误，无法生成令牌';
-    //     } else {
-    //         $response['data']['access_token'] = $token;
-    //         $response['data']['expires_in']   = strval(time() + 86400);
-    //     }
-
-    //     return response()->json($response);
-    // }
+    }
 }

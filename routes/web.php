@@ -16,16 +16,13 @@ $router->get('/', function () use ($router) {
 });
 
 
-$router->get('example/index', 'ExampleController@index');
-$router->get('user/index', 'UserController@index');
 
 $router->group(['prefix' => 'v1','namespace' => 'Api'], function() use ($router)
 {
     // 使用 "App\Http\Controllers\Api" 命名空间...
-    $router->get('login', 'LoginController@login');
-    $router->get('logout', 'LoginController@logout');
-    $router->get('refreshToken', 'LoginController@refreshToken');
-    $router->group(['middleware'=>'auth'],function() use ($router){
+    $router->get('login', 'loginController@login');
+    $router->get('type/select', 'typeController@select');
+    $router->group(['middleware'=>'token'],function() use ($router){
         $router->get('user/index', 'UserController@index');
         $router->get('user/test', 'UserController@test');
 

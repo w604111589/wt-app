@@ -65,13 +65,17 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-$app->routeMiddleware([
-    'auth' => App\Http\Middleware\Authenticate::class,
-]);
+// $app->routeMiddleware([
+//     'auth' => App\Http\Middleware\Authenticate::class,
+// ]);
 
 $app->middleware([
     App\Http\Middleware\AfterMiddleware::class
  ]);
+
+ $app->routeMiddleware([
+    'token' => App\Http\Middleware\TokenMiddleware::class,
+]);
 
 
 /*
@@ -85,12 +89,11 @@ $app->middleware([
 |
 */
 
-$app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
-$app->register(App\Providers\EventServiceProvider::class);
+// $app->register(App\Providers\AppServiceProvider::class);
+// $app->register(App\Providers\AuthServiceProvider::class);
+// $app->register(App\Providers\EventServiceProvider::class);
 
-// 新增JWT的注册
-$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class); 
+
 
 /*
 |--------------------------------------------------------------------------

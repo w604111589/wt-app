@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use App\Models\Jwt;
 
 class Authenticate
 {
@@ -35,6 +36,7 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        //默认的认证方式是api
         if ($this->auth->guard($guard)->guest()) {
             $response['code'] = '4001';
             $response['errorMsg'] = '无效令牌，需要重新获取';

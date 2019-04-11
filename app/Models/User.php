@@ -12,14 +12,16 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable;
-    protected $table = 'wt_user';
+
+    protected $table = 'wt_user'; 
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'loginname', 
+        'username', 
         'realname',
         'email',
         'phone',
