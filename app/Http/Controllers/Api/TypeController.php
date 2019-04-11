@@ -5,41 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Models\Res;
-use App\Models\User;
-use App\Models\Jwt;
+use App\Http\Models\Api\Type;
 
-class LoginController extends Controller{
+class TypeController extends Controller{
 
-    private $salt;
-
-    public function __construct()
+    /**
+     * @author w604111589
+     * @path('type/select') 获取类型
+     * @param Resquest $request
+     * @return array()
+     */
+    public function select(Request $request)
     {
-        $this->salt = "userloginregister";
-    }
-    //登录
-    public function login(Request $request)
-    {
-        if($request->has('username') && $request->has('password')){
-            $user = User::where('username', '=', $request->input('username'))->where('password', '=', $request->input('password'))->first();
-            if($user){
-                $payload = [
-                    'iss'=>'w604111589',
-                    'iat'=>time(),
-                    'exp'=>time()+7200,
-                    'nbf'=>time(),
-                    'sub'=>$user['username'],
-                    'jti'=>md5(uniqid('JWT').time())
-                ];
-
-                $jwt=new Jwt;
-                $token=$jwt -> getToken($payload);
-                return Res::success(['token'=>$token]);
-            }else{
-                return '用户名或密码不正确,登录失败';
-            }
-        }else{
-            return '登录信息不完整,请输入用户名和密码';
-        }
+        $res = Type::selectAll();
+        return Res::success($res);
     }
     
     /**

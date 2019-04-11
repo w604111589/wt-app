@@ -1,4 +1,8 @@
 <?php
+
+namespace App\Models;
+
+
 /**
  * PHP实现jwt
  */
@@ -11,19 +15,24 @@ class Jwt {
     );
 
     //使用HMAC生成信息摘要时所使用的密钥
-    private static $key='123456';
+    private static $key = 'w604111589';
 
 
+
+    // public function __construct(){
+    //     self::$key = env('JWT_KEY');
+    //     echo self::$key;
+    // }
     /**
      * 获取jwt token
      * @param array $payload jwt载荷   格式如下非必须
      * [
-     *  'iss'=&gt;'jwt_admin',  //该JWT的签发者
-     *  'iat'=&gt;time(),  //签发时间
-     *  'exp'=&gt;time()+7200,  //过期时间
-     *  'nbf'=&gt;time()+60,  //该时间之前不接收处理该Token
-     *  'sub'=&gt;'www.admin.com',  //面向的用户
-     *  'jti'=&gt;md5(uniqid('JWT').time())  //该Token唯一标识
+     *  'iss'=>'jwt_admin',  //该JWT的签发者
+     *  'iat'=>time(),  //签发时间
+     *  'exp'=>time()+7200,  //过期时间
+     *  'nbf'=>time()+60,  //该时间之前不接收处理该Token
+     *  'sub'=>'www.admin.com',  //面向的用户
+     *  'jti'=>md5(uniqid('JWT').time())  //该Token唯一标识
      * ]
      * @return bool|string
      */
@@ -124,30 +133,3 @@ class Jwt {
         return self::base64UrlEncode(hash_hmac($alg_config[$alg], $input, $key,true));
     }
 }
-
-    //测试和官网是否匹配begin
-    $payload=array('sub' => '1234567890111','name'=>'John Doe','iat'=>1516239022);
-    $jwt=new Jwt;
-    $token=$jwt -> getToken($payload);
-    echo "<pre>";
-    echo $token;
-    
-    //对token进行验证签名
-    $getPayload=$jwt->verifyToken($token);
-    echo "<br><br>";
-    print_r($getPayload);
-    echo "<br><br>";
-    //测试和官网是否匹配end
-    
-    echo '111'."\n";
-    //自己使用测试begin
-    $payload_test=array('iss'=>'admin','iat'=>time(),'exp'=>time()+7200,'nbf'=>time(),'sub'=>'www.admin.com','jti'=>md5(uniqid('JWT').time()));
-    $token_test=Jwt::getToken($payload_test);
-    echo "<pre>";
-    echo $token_test;
-    
-    //对token进行验证签名
-    $getPayload_test=Jwt::verifyToken($token_test);
-    echo "<br><br>";
-    print_r($getPayload_test);
-    echo "<br><br>";
