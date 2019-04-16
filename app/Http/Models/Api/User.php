@@ -15,4 +15,11 @@ class User extends Model{
 		return $res;
 	}
 
+	public static function searchUser($author){
+		// print_r($author);die;
+		$res = [];
+		$res['items'] = DB::table('wt_user')->where('username','like',"{$author}%")->select('id','username')->get();
+		return $res;
+	}
+
 }

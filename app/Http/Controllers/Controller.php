@@ -6,8 +6,8 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    public function index(){
-        return "i am a chinese!";
-    }
+    // public function index(){
+    //     return "i am a chinese!";
+    // }
     //
 }
