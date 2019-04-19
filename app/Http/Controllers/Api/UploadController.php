@@ -27,7 +27,7 @@ class UploadController extends Controller{
     public function index(Request $request){
 
         $file=$request->file('file');
-        // print_r(base_path());die;
+        if(!$file) return  Res::fail('文件不存在');
         if(!$file->isValid()){
            return  Res::fail('文件不合法');
         }
@@ -68,6 +68,57 @@ class UploadController extends Controller{
 		return '';
     }
 
+    public function uploadbase64(Request $request){
 
+        $file=$request->file('avatar');
+        
+        if(!$file) return  Res::fail('文件不存在');
+        // $res = $this->base64EncodeImage($file);
+        $res = $this->base64_image_content($file);
+        if($res){
+            return  Res::success(['pathurl'=> $res]);
+        }
+        return  Res::fail('文件上传失败');
+    }
+
+    //图片转base64编码
+    public function base64EncodeImage ($image_file) {
+
+        $base64_image = '';
+        $image_info = getimagesize($image_file);
+        $image_data = fread(fopen($image_file, 'r'), filesize($image_file));
+        $base64_image = 'data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data));
+        return $base64_image;
+
+    }
+
+    //base64图片转换为图片并保存
+    function base64_image_content($base64_image_content){
+        //匹配出图片的格式
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)){
+            $type = $result[2];
+            print_r(11);die;
+            $dataDir = $this->rootPath.date('Y-m-d').'/';
+            $fullPathdir = base_path().'/public/'.$dataDir;
+            if(!is_dir($fullPathdir)){
+                mkdir($fullPathdir);
+            }
+            $domain = $_SERVER['HTTP_HOST'];
+            $name = $new_file.time().".{$type}";
+            $relativePath = $dataDir.$name;
+            $fullPath = base_path().'/public/'.$relativePath;
+            // $new_file = base_path().'/public/'.$dataDir;
+            if (!file_exists($fullPath)){
+                $path = 'http://'.$domain.'/'.$relativePath;
+                if (file_put_contents($fullPath, base64_decode(str_replace($result[1], '', $base64_image_content)))){
+                    return $path;
+                }else{
+                    return false;
+                }
+            }
+        }else{
+            return false;
+        }
+    }
 
 }

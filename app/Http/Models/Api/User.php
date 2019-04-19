@@ -5,9 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 class User extends Model{
 
-	public function selectOne(){
-
-	}
+	protected $table ="wt_user";
 
 	public static function selectAll(){
 
@@ -16,9 +14,15 @@ class User extends Model{
 	}
 
 	public static function searchUser($author){
-		// print_r($author);die;
+
 		$res = [];
 		$res['items'] = DB::table('wt_user')->where('username','like',"{$author}%")->select('id','username')->get();
+		return $res;
+	}
+
+	public static function updateavatar($avatar){
+		
+		$res = DB::table('wt_user')->where('username','=',$GLOBALS['username'])->update(['avatar' => $avatar ]);
 		return $res;
 	}
 
