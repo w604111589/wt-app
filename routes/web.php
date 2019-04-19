@@ -26,17 +26,15 @@ $router->group(['namespace' => 'Api'], function() use ($router)
     header("Access-Control-Allow-Headers: Authorization,Content-Type,token");
 	header('Access-Control-Max-Age:3600');
 
-
-
     $router->post('login', 'LoginController@login');
     $router->post('upload', 'UploadController@index');
     $router->post('uploadbase64', 'UploadController@uploadbase64');
-    $router->get('article/list', 'articleController@list');
-    $router->get('article/detail', 'articleController@detail');
-    $router->post('article/create', 'articleController@create');
-    $router->post('article/update', 'articleController@update');
+    $router->get('article/list', 'ArticleController@list');
+    $router->get('article/detail', 'ArticleController@detail');
+    $router->post('article/create', 'ArticleController@create');
+    $router->post('article/update', 'ArticleController@update');
     $router->get('user/search', 'UserController@search');
-    $router->get('type/select', 'typeController@select');
+    $router->get('type/select', 'TypeController@select');
 
     $router->group(['middleware'=>'token'],function() use ($router){
         $router->get('user/index', 'UserController@index');

@@ -19,6 +19,7 @@ class LoginController extends Controller{
     //登录
     public function login(Request $request)
     {
+
         if($request->has('username') && $request->has('password')){
             $user = User::where('username', '=', $request->input('username'))->where('password', '=', $request->input('password'))->first();
             if($user){
