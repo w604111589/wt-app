@@ -20,7 +20,7 @@ class Res{
 
 		$arr = [];
 		// $arr['code'] = $code;
-		$arr['status'] = 200;
+		$arr['status'] = $code;
 		$arr['data'] = $data;
 		$arr['msg'] = $msg;
 		$arr['time'] = \date('Y-m-d h:i:s');

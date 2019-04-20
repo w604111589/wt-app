@@ -13,8 +13,23 @@ class UserController extends Controller{
      * @path（‘user/index’）
      * @return array()
      */
-    public function index(){
-        $res = User::selectAll('SELECT * FROM wt_user');
+    public function index(Request $request){
+        $user = User::where('username', '=', $GLOBALS['username'])->first();
+        // $res = User::selectAll('SELECT * FROM wt_user');
+        return Res::success($user);
+    }
+
+    /**
+     * @path（‘user/index’） //根据用户名搜索用户
+     * @return array()
+     */
+    public function saveavatar(Request $request){
+        
+        
+
+        $avatar = $request->input('avatarUrl');
+        // print_r($arr);die;
+        $res = User::updateavatar($avatar);
         return Res::success($res);
     }
 

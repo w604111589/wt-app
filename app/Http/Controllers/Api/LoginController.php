@@ -26,6 +26,7 @@ class LoginController extends Controller{
      */
     public function login(Request $request)
     {
+
         if($request->has('username') && $request->has('password')){
             $user = User::where('username', '=', $request->input('username'))->where('password', '=', $request->input('password'))->first();
             if($user){

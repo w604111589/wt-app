@@ -21,10 +21,16 @@ class TokenMiddleware
         if(!$token = $request->header('token')){
             return response('Please log in first', 401);
         }
-
+        
         if( !$getPayload=(new Jwt)->verifyToken($token)){
             return response('Illegal token', 401);
         }
+        $username=$getPayload['sub'];
+        // $request->input('username') = $username; 
+        // print_r( $username);die;
+        // print_r( $request);die;
+        // $response =  $next($request);
+        $GLOBALS['username'] = $username;
         $response =  $next($request);
         return $response;
     }
