@@ -25,12 +25,14 @@ class TokenMiddleware
         if( !$getPayload=(new Jwt)->verifyToken($token)){
             return response('Illegal token', 401);
         }
-        $username=$getPayload['sub'];
+        $userinfo=$getPayload['sub'];
         // $request->input('username') = $username; 
         // print_r( $username);die;
         // print_r( $request);die;
         // $response =  $next($request);
-        $GLOBALS['username'] = $username;
+        $userArr = explode("/",$userinfo);
+        $GLOBALS['userid'] = $userArr[0];
+        $GLOBALS['username'] = $userArr[1];
         $response =  $next($request);
         return $response;
     }

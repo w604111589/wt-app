@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Res;
-use App\Models\User;
+use App\Http\Models\Api\User;
 use App\Models\Jwt;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller{
 
-    protected $jwt;
+    // protected $jwt;
 
-    public function __construct(JWTAuth $jwt)
-    {
-        $this->jwt = $jwt;
-    }
+    // public function __construct(JWTAuth $jwt)
+    // {
+    //     $this->jwt = $jwt;
+    // }
 
     /**
      * 登录
@@ -35,23 +36,45 @@ class LoginController extends Controller{
                     'iat'=>time(),
                     'exp'=>time()+7200,
                     'nbf'=>time(),
-                    'sub'=>$user['username'],
+                    'sub'=>$user['id'].'/'.$user['username'],
                     'jti'=>md5(uniqid('JWT').time())
                 ];
 
                 $jwt=new Jwt;
                 $token=$jwt -> getToken($payload);
+                $this->getLoginInfo($user['username']);
                 return Res::success(['token'=>$token]);
             }else{
-                return '用户名或密码不正确,登录失败';
+                $reason = "用户名或密码不正确,登录失败";
+                $this->getLoginInfo($request->input('username'),0,$reason);
+                return Res::fail($reason);
             }
         }else{
-            return '登录信息不完整,请输入用户名和密码';
+            $reason = "登录信息不完整,请输入用户名和密码";
+            $this->getLoginInfo($request->input('username'),0,$reason);
+            return Res::fail($reason);
         }
-
-        return response()->json(compact('token'));
+        // return response()->json(compact('token'));
 
     }
+
+    /**
+     * @author(wt)
+     * 返回登陆的数据
+     */
+    private function getLoginInfo($username,$status=1,$reason="登陆成功"){
+        $res=[];
+        // print_r($_SERVER);die;
+        $res['login_address'] = $_SERVER['HTTP_USER_AGENT'];
+        $res['login_ip'] = $_SERVER['REMOTE_ADDR'];
+        $res['username'] = $username;
+        $res['create_time'] = date('Y-m-d');
+        $res['login_reason'] = $reason;
+        $res['login_status'] = $status;
+
+        User::createLogin($res);
+        
+    } 
     
     /**
      * @author w604111589

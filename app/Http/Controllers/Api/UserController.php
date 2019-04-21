@@ -45,4 +45,15 @@ class UserController extends Controller{
         return Res::success($res);
     }
 
+        /**
+     * @path（‘user/loginlog’） //根据用户名搜索用户
+     * @return array()
+     */
+    public function loginlog(Request $request){
+        $page = $request->input('page',1);
+        $limit = $request->input('limit',20);
+        $res = User::getLoginlog($page,$limit);
+        return Res::success($res);
+    }
+
 }

@@ -26,4 +26,16 @@ class User extends Model{
 		return $res;
 	}
 
+	public static function createLogin($loginInfo){
+		$res = DB::table('wt_loginlog')->insert($loginInfo);
+		return $res;
+	}
+
+	public static function getLoginlog($page,$limit){
+		$query = DB::table('wt_loginlog')->where("username",'=',$GLOBALS['username']);
+		$res['total'] = $query->count();
+		$res['items'] = $query->skip(($page-1)*$limit)->take($limit)->get();
+		return $res;
+	}
+
 }

@@ -40,6 +40,14 @@ $router->group(['namespace' => 'Api'], function() use ($router)
         $router->get('user/index', 'UserController@index');
         $router->get('user/avatar', 'UserController@saveavatar');
         $router->get('user/test', 'UserController@test');
+        $router->get('user/loginlog', 'UserController@loginlog');
+        $router->get('message', 'MessageController@index');
+
+        //标签查询，创建，修改的功能
+        $router->get('label/index', 'LabelController@index');
+        $router->post('label/create', 'LabelController@create');
+        $router->post('label/update', 'LabelController@update');
+
 
     });
 
