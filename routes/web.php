@@ -21,21 +21,22 @@ $router->group(['namespace' => 'Api'], function() use ($router)
 
     //允许跨域访问
 	header("Access-Control-Allow-Origin: *");
-	header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+	header("Access-Control-Allow-Methods: GET, POST");
     header('Access-Control-Allow-Credentials: true');
     header("Access-Control-Allow-Headers: Authorization,Content-Type,token");
-	header('Access-Control-Max-Age:3600');
+	header('Access-Control-Max-Age:7200');
 
     $router->post('login', 'LoginController@login');
+    $router->post('register', 'LoginController@register');
     $router->post('upload', 'UploadController@index');
     $router->post('uploadbase64', 'UploadController@uploadbase64');
-    $router->get('article/list', 'ArticleController@list');
-    $router->get('article/detail', 'ArticleController@detail');
-    $router->post('article/create', 'ArticleController@create');
-    $router->post('article/update', 'ArticleController@update');
+
     $router->get('user/search', 'UserController@search');
     $router->get('type/select', 'TypeController@select');
     $router->get('server', 'ServerController@index');
+    //文章列表
+    $router->get('article/list', 'ArticleController@list');
+    $router->get('article/detail', 'ArticleController@detail');
 
     $router->group(['middleware'=>'token'],function() use ($router){
         $router->get('user/index', 'UserController@index');
@@ -49,7 +50,11 @@ $router->group(['namespace' => 'Api'], function() use ($router)
         $router->post('label/create', 'LabelController@create');
         $router->post('label/update', 'LabelController@update');
 
-
+        //创建文章
+        $router->get('admin/article/list', 'ArticleController@list');
+        $router->get('admin/article/detail', 'ArticleController@detail');
+        $router->post('article/create', 'ArticleController@create');
+        $router->post('article/update', 'ArticleController@update');
     });
 
 

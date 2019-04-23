@@ -19,7 +19,10 @@ class ArticleController extends Controller{
      */
     public function list(Request $request)
     {   
-        $res = Article::selectAll();
+        $page = $request->input('page',1);
+        $limit = $request->input('limit',20);
+        $search= $request->input('search');
+        $res = Article::selectData($page,$limit,$search);
         return Res::success($res);
     }
 
@@ -48,8 +51,9 @@ class ArticleController extends Controller{
      */
     public function create(Request $request)
     {   
-        $input = $request->except(['token','source_uri','platforms','image_uri','comment_disabled']);
-        $res = Article::insertData($input);
+        $input = $request->except(['token','platforms','labels']);
+        $labels = $request->input('labels',[]);
+        $res = Article::insertData($input,$labels);
         return Res::success($res);
     }
 
@@ -62,8 +66,9 @@ class ArticleController extends Controller{
 
     public function update(Request $request)
     {   
-        $input = $request->except(['token']);
-        $res = Article::updateData($input);
+        $input = $request->except(['token','labels','platforms',]);
+        $labels = $request->input('labels');
+        $res = Article::updateData($input,$labels);
         return Res::success($res);
     }
 

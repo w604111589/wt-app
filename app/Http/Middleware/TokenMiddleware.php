@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\Jwt;
+use App\Http\Models\Res;
 
 class TokenMiddleware
 {
@@ -19,11 +20,11 @@ class TokenMiddleware
 
         // print_r($request->header('token'));die;
         if(!$token = $request->header('token')){
-            return response('Please log in first', 401);
+            return response(Res::fail("请先登陆",301), 200);
         }
         
         if( !$getPayload=(new Jwt)->verifyToken($token)){
-            return response('Illegal token', 401);
+            return response(Res::fail("token不合法",301), 200);
         }
         $userinfo=$getPayload['sub'];
         // $request->input('username') = $username; 

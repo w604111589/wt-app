@@ -10,12 +10,8 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller{
 
-    // protected $jwt;
+    protected $inviter = 'wt';
 
-    // public function __construct(JWTAuth $jwt)
-    // {
-    //     $this->jwt = $jwt;
-    // }
 
     /**
      * 登录
@@ -64,7 +60,6 @@ class LoginController extends Controller{
      */
     private function getLoginInfo($username,$status=1,$reason="登陆成功"){
         $res=[];
-        // print_r($_SERVER);die;
         $res['login_address'] = $_SERVER['HTTP_USER_AGENT'];
         $res['login_ip'] = $_SERVER['REMOTE_ADDR'];
         $res['username'] = $username;
@@ -84,7 +79,25 @@ class LoginController extends Controller{
      */
     public function register(Request $request)
     {
-        // return Auth::guard();
+        if(!$request->has('username')){ return Res::fail("用户名不能为空"); }
+        if(!$request->has('password')){ return Res::fail("密码不能为空"); }
+        if(!$request->has('inviter')){ return Res::fail("邀请人不能为空"); }
+        if($request->input('inviter') !== $this->inviter){ 
+            return Res::fail("邀请人信息错误"); 
+        }
+
+        //检验用户是否存在
+        $user= User::selectUserByUsername($request->input('username'));
+        if($user){
+            return Res::fail("该用户已存在");
+        }
+
+        //创建用户
+        $input = $request->only('username','password','inviter');
+        $res = User::createUser($input);
+
+        return Res::success($res); 
+
     }
 
     /**

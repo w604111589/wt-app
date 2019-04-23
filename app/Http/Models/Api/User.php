@@ -13,6 +13,17 @@ class User extends Model{
 		return $res;
 	}
 
+	public static function selectUserByUsername($username){
+		$res = DB::table('wt_user')->where('username',$username)->select('id','username')->first();
+		return $res;
+	}
+
+	public static function createUser($input){
+		$input['create_time'] = $input['update_time'] = date('Y-m-d h:i:s');
+		$res = DB::table('wt_user')->insert($input);
+		return $res;
+	}
+
 	public static function searchUser($author){
 
 		$res = [];
