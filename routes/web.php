@@ -27,12 +27,10 @@ $router->group(['namespace' => 'Api'], function() use ($router)
 	header('Access-Control-Max-Age:3600');
 
     $router->post('login', 'LoginController@login');
+    $router->post('register', 'LoginController@register');
     $router->post('upload', 'UploadController@index');
     $router->post('uploadbase64', 'UploadController@uploadbase64');
-    $router->get('article/list', 'ArticleController@list');
-    $router->get('article/detail', 'ArticleController@detail');
-    $router->post('article/create', 'ArticleController@create');
-    $router->post('article/update', 'ArticleController@update');
+
     $router->get('user/search', 'UserController@search');
     $router->get('type/select', 'TypeController@select');
 
@@ -48,7 +46,11 @@ $router->group(['namespace' => 'Api'], function() use ($router)
         $router->post('label/create', 'LabelController@create');
         $router->post('label/update', 'LabelController@update');
 
-
+        //文章列表
+        $router->get('article/list', 'ArticleController@list');
+        $router->get('article/detail', 'ArticleController@detail');
+        $router->post('article/create', 'ArticleController@create');
+        $router->post('article/update', 'ArticleController@update');
     });
 
 
