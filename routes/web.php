@@ -35,6 +35,7 @@ $router->group(['namespace' => 'Api'], function() use ($router)
     $router->post('article/update', 'ArticleController@update');
     $router->get('user/search', 'UserController@search');
     $router->get('type/select', 'TypeController@select');
+    $router->get('server', 'ServerController@index');
 
     $router->group(['middleware'=>'token'],function() use ($router){
         $router->get('user/index', 'UserController@index');
