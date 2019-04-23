@@ -25,15 +25,16 @@ class Article extends Model{
 		return $res;
 	}
 
-	public static function selectData($page=1,$limit=20){
+	public static function selectData($page=1,$limit=20,$search){
 		$query = DB::table('wt_article');
-		if( !in_array($GLOBALS['userid'] ,[10000,10001])){
+		if( isset($GLOBALS['userid']) && !in_array($GLOBALS['userid'] ,[10000,10001])){
 			$query->where('creater_id',$GLOBALS['userid']);
+		}else{
+			$query->where('status',1);
 		}
+		if($search) $query->where('abstract','like',"%$search%");
 		$res['total'] = $query->count();
 		$res['items'] = $query->skip(($page-1)*$limit)->take($limit)->get()->toArray();
-		
-
 
 		$ids = [];
 		foreach($res['items'] as $value){
