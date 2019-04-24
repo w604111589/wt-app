@@ -38,6 +38,10 @@ class ServerInfo
         }
     }
 
+    //--------------------------------------------
+    //-      Function to get Mem Total      -
+    //--------------------------------------------
+
     function get_total_mem($args)
     {
 

@@ -25,8 +25,6 @@ class UserController extends Controller{
      */
     public function saveavatar(Request $request){
         
-        
-
         $avatar = $request->input('avatarUrl');
         // print_r($arr);die;
         $res = User::updateavatar($avatar);
