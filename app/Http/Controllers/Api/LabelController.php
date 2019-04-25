@@ -18,14 +18,16 @@ class LabelController extends Controller{
     }
 
     public function create(Request $request){
-        $input = $request->except('token');
+        if(!$request->input('name')){return Res::fail("标签名不存在");}
+        $input = $request->all();
         $res = Label::createData($input);
         return Res::success($res);
     }
 
     public function update(Request $request){
-        if(!$request->has['name']){return Res::fail("标签名不存在"); }
-        $input = $request->only['name'];
+        if(!$request->input('name')){return Res::fail("标签名不存在"); }
+        
+        $input = $request->only('id','name','status');
         $res = Label::updateData($input);
         return Res::success($res);
     }
