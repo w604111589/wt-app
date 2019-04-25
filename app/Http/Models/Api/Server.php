@@ -17,7 +17,7 @@ class Server extends Model{
 		}
 		// print_r($limit);die;
 		// $res = $query->take($limit)->pluck('cpu_load','create_time');
-		$res = $query->take($limit)->select('cpu_load','create_time')->get();
+		$res = $query->take($limit)->select('cpu_load','create_time')->orderBy('id','desc')->get();
 		return $res;
 	}
 
@@ -29,9 +29,8 @@ class Server extends Model{
 				$query->where($key,$value);
 			}
 		}
-		// print_r($limit);die;
-		// $res = $query->take($limit)->pluck('cpu_load','create_time');
-		$res = $query->select('cpu_load','create_time')->first();
+		$res = $query->select('cpu_load','create_time')->orderBy('id','desc')->first();
+		// print_r($res);die;
 		return $res;
 	}
 

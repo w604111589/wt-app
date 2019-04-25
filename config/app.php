@@ -13,7 +13,10 @@ return [
     |
     */
 
+
     'key' => env('APP_KEY', 'SomeRandomString!!!'),
+
+    'timezone' => 'Asia/Shanghai',
 
     'cipher' => 'AES-256-CBC',
 
