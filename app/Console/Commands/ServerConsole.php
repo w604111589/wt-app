@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use App\Http\Models\ServerInfo;
 
-class Server extends Command{
+class ServerConsole extends Command{
 
 	/**
      * The name and signature of the console command.
      *
      * @var string
      */
-	protected $signature = 'server:info';
+	protected $signature = 'server:save';
 
 		
 	/**
@@ -21,7 +21,7 @@ class Server extends Command{
      *
      * @var string
      */
-	protected $description = '隔几秒钟获取服务器信息写入数据库';
+	protected $description = '隔段时间获取服务器信息写入数据库';
 	
 	    /**
      * Create a new command instance.

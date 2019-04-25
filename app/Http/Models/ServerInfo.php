@@ -597,7 +597,3 @@ class ServerInfo
         return $array;
     }
 }
-
-
-$server = new ServerInfo();
-print_r($server->get());
