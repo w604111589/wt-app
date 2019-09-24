@@ -13,7 +13,7 @@ class ArticleController extends Controller{
 
     /**
      * @author w604111589
-     * @path('article/list') 文章列表
+     * @path('article/list') 文章列表wt
      * @param Resquest $request
      * @return array()
      */
